@@ -7,34 +7,11 @@ make gdcrm
 
 ## Run
 
-At least three nodes by default.
-
-#### Run bootnode
-
-./build/bin/bootnode --genkey ./bootnode.key
-
-./build/bin/bootnode --nodekey ./bootnode.key --addr :12340 --group 0
-
-#### Run dcrm node
-
-##### Get "enode" field from the first step
-
-for example: 
-enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@[::]:12340
-
-##### Run first node
-
-./build/bin/gdcrm --rpcport 9010 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340" --port 12341 --nodekey "node1.key"   
-
-##### Run second node
-
-./build/bin/gdcrm --rpcport 9011 --bootnodes enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340 --port 12342 --nodekey "node2.key" 
-
-##### Run third node
-
-./build/bin/gdcrm --rpcport 9012 --bootnodes enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340 --port 12343 --nodekey "node3.key" 
+./build/bin/gdcrm
 
 ## JSON RPC API
+
+Default rpc port: 9012
 
 #### dcrm_genPubkey
 
@@ -87,3 +64,31 @@ curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method
 "rsv":"FFBB398B95ED2ED308B0FE87BC254FFC2C9957742EA05C18A1411C672B74FBDF6FBD6F4915799F2B4186192581D4506039ADEB79C8EB954E779901FDB9575C8301"
 }
 
+## Run Local
+
+At least three nodes by default.
+
+#### Run bootnode
+
+./build/bin/bootnode --genkey ./bootnode.key
+
+./build/bin/bootnode --nodekey ./bootnode.key --addr :12340 --group 0
+
+#### Run dcrm node
+
+##### Get "enode" field from the first step
+
+for example: 
+enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@[::]:12340
+
+##### Run first node
+
+./build/bin/gdcrm --rpcport 9010 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340" --port 12341 --nodekey "node1.key"   
+
+##### Run second node
+
+./build/bin/gdcrm --rpcport 9011 --bootnodes enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340 --port 12342 --nodekey "node2.key" 
+
+##### Run third node
+
+./build/bin/gdcrm --rpcport 9012 --bootnodes enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340 --port 12343 --nodekey "node3.key" 
