@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"net"
 	"strings"
-	"gopkg.in/urfave/cli.v1"
 	"github.com/fusion/go-fusion/rpc"
 	"github.com/fusion/go-fusion/crypto/dcrm"
 )
@@ -94,7 +93,7 @@ var (
 
 func RpcInit(port int) {
 	rpcport = port
-	go startRpcServer(nil)
+	go startRpcServer()
 }
 
 // splitAndTrim splits input separated by a comma
@@ -107,7 +106,7 @@ func splitAndTrim(input string) []string {
 	return result
 }
 
-func startRpcServer(c *cli.Context) error {
+func startRpcServer() error {
 	go func() error {
 	    server = rpc.NewServer()
 	    service := new(Service)
