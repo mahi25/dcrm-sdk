@@ -36,9 +36,9 @@ var (
     SepDel = "dcrmsepdel"
 
     PaillierKeyLength = 2048
-    sendtogroup_lilo_timeout = 200
-    sendtogroup_timeout = 200
-    ch_t = 80
+    sendtogroup_lilo_timeout = 80 
+    sendtogroup_timeout = 80
+    ch_t = 60
 
     //callback
     GetGroup func(string) (int,string)
@@ -712,7 +712,8 @@ func Dcrmcall(msg interface{},enode string) <-chan string {
     ch := make(chan string, 1)
     GroupId := GetGroupIdByEnode(enode)
     fmt.Println("=========Dcrmcall===========","GroupId",GroupId,"enode",enode)
-    if !strings.EqualFold(GroupId,enode) {
+    //if !strings.EqualFold(GroupId,enode) {
+    if strings.EqualFold(GroupId,"") {
 	ret := ("fail"+Sep+"xxx"+Sep+"error group id")
 	ch <- ret 
 	return ch
@@ -1084,7 +1085,8 @@ func (self *ReqAddrSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
 
     GroupId := GetGroupIdByEnode(cur_enode)
     fmt.Println("=========ReqAddrSendMsgToMsg.Run===========","GroupId",GroupId,"cur_enode",cur_enode)
-    if !strings.EqualFold(GroupId,cur_enode) {
+    //if !strings.EqualFold(GroupId,cur_enode) {
+    if strings.EqualFold(GroupId,"") {
 	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("get group id fail.")}
 	ch <- res
 	return false
@@ -1129,13 +1131,13 @@ func (self *SignSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
     message := self.Message
     txhashs := []rune(message)
     if string(txhashs[0:2]) != "0x" {
-	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("message must be 32 byte hex number start with 0x,for example: 0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41")}
+	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("message must be 16-in-32-byte character sprang at the beginning of 0x,for example: 0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41")}
 	ch <- res
 	return false
     }
     message = string(txhashs[2:])
     if len(message) != 64 {
-	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("message must be 32 byte hex number start with 0x,for example: 0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41")}
+	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("message must be 16-in-32-byte character sprang at the beginning of 0x,for example: 0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41")}
 	ch <- res
 	return false
     }
@@ -1163,7 +1165,9 @@ func (self *SignSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
     }
 
     GroupId := GetGroupIdByEnode(cur_enode)
-    if !strings.EqualFold(GroupId,cur_enode) {
+    fmt.Println("=========SignSendMsgToDcrm.Run===========","GroupId",GroupId,"cur_enode",cur_enode)
+    if strings.EqualFold(GroupId,"") {
+    //if !strings.EqualFold(GroupId,cur_enode) {
 	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("get group id fail.")}
 	ch <- res
 	return false
@@ -1175,6 +1179,7 @@ func (self *SignSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
 	return false
     }
 
+    fmt.Println("=========SignSendMsgToDcrm.Run,waiting for result.===========","GroupId",GroupId,"cur_enode",cur_enode)
     w := workers[workid]
     chret,cherr := GetChannelValue(sendtogroup_lilo_timeout,w.ch)
     if cherr != nil {

@@ -26,9 +26,9 @@ func listenSignal(exit chan int) {
 
 type Service struct {}
 
-// this will be called by dcrm_reqAddr
-func (this *Service) ReqAddr() map[string]interface{} {   //函数名首字母必须大写
-    fmt.Println("==============dcrm_reqAddr==================")
+// this will be called by dcrm_genPubkey
+func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母必须大写
+    fmt.Println("==============dcrm_genPubkey==================")
     keytype := "ECDSA"  //tmp
     if (!strings.EqualFold(keytype,"ECDSA") && !strings.EqualFold(keytype,"ED25519")) || keytype == "" {
 	return map[string]interface{}{
@@ -39,7 +39,7 @@ func (this *Service) ReqAddr() map[string]interface{} {   //函数名首字母�
 
     pubkey,err := dcrm.SendReqToGroup(keytype,"rpc_req_dcrmaddr")
     if pubkey == "" && err != nil {
-	fmt.Println("===========dcrm_reqAddr,err3=%v============",err)
+	fmt.Println("===========dcrm_genPubkey,err=%v============",err)
 	return map[string]interface{}{
 		"pubkey": "",
 		"error": err.Error(),
