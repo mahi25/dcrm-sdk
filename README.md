@@ -47,6 +47,7 @@ none
 ##### Return
 
 `error` - error info.
+
 `pubkey` - dcrm pubkey.
 
 ##### Example
@@ -72,6 +73,7 @@ dcrm sign.
 ##### Return
 
 `error` - error info.
+
 `rsv` - signature str.
 
 ##### Example
