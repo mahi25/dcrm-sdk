@@ -1,0 +1,69 @@
+package main
+
+import (
+	"fmt"
+	"time"
+	"os"
+	"github.com/fusion/go-fusion/crypto/dcrm"
+	p2pdcrm "github.com/fusion/go-fusion/p2p/layer2"
+	rpcdcrm "github.com/fusion/go-fusion/rpc/dcrm"
+	"gopkg.in/urfave/cli.v1"
+)
+
+var (
+	//args
+	port        int
+	bootnode    string
+	keyfile   string
+	rpcport  int
+
+	err error
+)
+
+func main() {
+    app := cli.NewApp()
+    app.Usage = "gdcrm Init"
+    app.Action = startGdcrm
+    app.Flags = []cli.Flag{
+	    cli.IntFlag{Name: "rpcport", Value: 9010, Usage: "listen port", Destination: &rpcport},
+	    //命令行解析得到的port
+	    cli.IntFlag{Name: "port", Value: 0, Usage: "listen port", Destination: &port},
+	    //命令行解析得到bootnode
+	    cli.StringFlag{Name: "bootnode", Value: "", Usage: "boot node", Destination: &bootnode},
+	    cli.StringFlag{Name: "nodekey", Value: "", Usage: "private key filename", Destination: &keyfile},
+    }
+
+
+    if err = app.Run(os.Args); err != nil {
+	    fmt.Fprintln(os.Stderr, err)
+	    os.Exit(1)
+    }
+}
+
+func startGdcrm(ctx *cli.Context) error {
+    go func() error {
+	if ctx.GlobalIsSet("bootnode") {
+	    bootnode = ctx.GlobalString("bootnode")
+	}
+	if ctx.GlobalIsSet("port") {
+	    port = ctx.Int("port")
+	}
+	if ctx.GlobalIsSet("nodekey") {
+	    keyfile = ctx.GlobalString("nodekey")
+	}
+	if ctx.GlobalIsSet("rpcport") {
+	    rpcport = ctx.Int("rpcport")
+	}
+	
+	p2pdcrm.Layer2Init(port,bootnode,keyfile)
+	time.Sleep(time.Duration(15) * time.Second)
+	rpcdcrm.RpcInit(rpcport)
+	dcrm.Start()
+
+	select {}
+	return nil
+    }()
+    select {}
+    return nil
+}
+
