@@ -43,7 +43,7 @@ func init() {
 	app.Flags = []cli.Flag{
 		cli.IntFlag{Name: "rpcport", Value: 5559, Usage: "listen port", Destination: &rpcport},
 		cli.IntFlag{Name: "port", Value: 5551, Usage: "listen port", Destination: &port},
-		cli.StringFlag{Name: "bootnodes", Value: "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@207.232.180.145:5550", Usage: "boot node", Destination: &bootnodes},
+		cli.StringFlag{Name: "bootnodes", Value: "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@207.180.232.145:5550", Usage: "boot node", Destination: &bootnodes},
 		cli.StringFlag{Name: "nodekey", Value: "~/node.key", Usage: "private key filename", Destination: &keyfile},
 	}
 
