@@ -449,7 +449,7 @@ func getGroupInfo(gid NodeID, p2pType int) *group {
 	groupMemNum := getGroupMemNum(p2pType)
 	groupList := getGroupList(gid, p2pType)
 	fmt.Printf("getGroupInfo, gid: %v, groupList: %v, setgroup: %v, p2pType: %v\n", gid, groupList, setgroup, p2pType)
-	if setgroup == 1 && groupList.count == groupMemNum {
+	if setgroup == 1 && groupList != nil && groupList.count == groupMemNum {
 		groupList.Lock()
 		defer groupList.Unlock()
 		p := groupList
