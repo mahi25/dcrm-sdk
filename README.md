@@ -31,7 +31,7 @@ none
 
 // Request
 
-curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method":"dcrm_genPubkey","params":[],"id":67}' http://127.0.0.1:9012
+curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method":"dcrm_genPubkey","params":[],"id":67}' http://127.0.0.1:5559
 
 // Result
 
@@ -59,7 +59,7 @@ dcrm sign.
 
 // Request
 
-curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method":"dcrm_sign","params":["049ac626ee0f0f79a49d6ed37f14ff2ad4e4f45fddf6e5293bcaa6a607e5392b49dde27a8f0602e23bc5fa0b847bd28d46e2f2d1d0d8cf59514785e4276b28de9d","0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41"],"id":67}' http://127.0.0.1:9012
+curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method":"dcrm_sign","params":["049ac626ee0f0f79a49d6ed37f14ff2ad4e4f45fddf6e5293bcaa6a607e5392b49dde27a8f0602e23bc5fa0b847bd28d46e2f2d1d0d8cf59514785e4276b28de9d","0x19b6236d2e7eb3e925d0c6e8850502c1f04822eb9aa67cb92e5004f7017e5e41"],"id":67}' http://127.0.0.1:5559
 
 // Result
 
@@ -72,16 +72,22 @@ curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method
 
 #### Run bootnode
 ./build/bin/bootnode --genkey ./bootnode.key
+
 ./build/bin/bootnode --nodekey ./bootnode.key --addr :5550 --group 0
+
 will print bootnode which use for run node with args --bootnodes
 bootnode key such as enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@[::]:5550
 
 ##### Run nodes (3 nodes at least)
 INFO: if want reboot node, please wait 1 minute to run node after close node
 
-without args
+without args:
+
 ./build/bin/gdcrm
+
 (default: --nodekey ~/node.key --rpcport 5559 --port 5551 --bootnodes "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@207.232.180.145:5550")
 
-with args
-./build/bin/gdcrm --rpcport 9010 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@127.0.0.1:12340" --port 12341 --nodekey "node1.key"   
+with args,for example:
+
+./build/bin/gdcrm --rpcport 9012 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@192.168.1.104:12340" --port 12341 --nodekey "node1.key"
+
