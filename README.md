@@ -1,9 +1,7 @@
 
 ## Build
 
-make bootnode
-
-make gdcrm
+make
 
 ## Run
 
@@ -85,7 +83,7 @@ without args:
 
 ./build/bin/gdcrm
 
-(default: --nodekey ~/node.key --rpcport 5559 --port 5551 --bootnodes "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@207.232.180.145:5550")
+(default: --nodekey ~/node.key --rpcport 5559 --port 5551 --bootnodes "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@47.107.50.83:5550")
 
 with args,for example:
 

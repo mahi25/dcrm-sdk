@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"time"
 
 	"github.com/fusion/go-fusion/crypto"
+	"github.com/fusion/go-fusion/crypto/dcrm"
 	"github.com/fusion/go-fusion/p2p"
 	"github.com/fusion/go-fusion/p2p/discover"
-	"github.com/fusion/go-fusion/p2p/nat"
-	"gopkg.in/urfave/cli.v1"
 	"github.com/fusion/go-fusion/p2p/layer2"
+	"github.com/fusion/go-fusion/p2p/nat"
 	rpcdcrm "github.com/fusion/go-fusion/rpc/dcrm"
-	"github.com/fusion/go-fusion/crypto/dcrm"
+	"gopkg.in/urfave/cli.v1"
 	//"github.com/fusion/go-fusion/crypto/dcrm/dev"
 )
 
@@ -28,7 +29,7 @@ func main() {
 //========================= init ========================
 var (
 	//args
-	rpcport      int
+	rpcport   int
 	port      int
 	bootnodes string
 	keyfile   string
@@ -43,8 +44,8 @@ func init() {
 	app.Flags = []cli.Flag{
 		cli.IntFlag{Name: "rpcport", Value: 5559, Usage: "listen port", Destination: &rpcport},
 		cli.IntFlag{Name: "port", Value: 5551, Usage: "listen port", Destination: &port},
-		cli.StringFlag{Name: "bootnodes", Value: "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@207.180.232.145:5550", Usage: "boot node", Destination: &bootnodes},
-		cli.StringFlag{Name: "nodekey", Value: "~/node.key", Usage: "private key filename", Destination: &keyfile},
+		cli.StringFlag{Name: "bootnodes", Value: "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@47.107.50.83:5550", Usage: "boot node", Destination: &bootnodes},
+		cli.StringFlag{Name: "nodekey", Value: "", Usage: "private key filename", Destination: &keyfile},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -55,18 +56,22 @@ func init() {
 
 func startP2pNode(c *cli.Context) error {
 	go func() error {
-		switch {
+		if keyfile == "" {
+			user, erru := user.Current()
+			if erru == nil {
+				keyfile = fmt.Sprintf("%v/node.key", user.HomeDir)
+			}
 		}
+		fmt.Printf("nodekey: %v\n", keyfile)
 		nodeKey, errkey := crypto.LoadECDSA(keyfile)
 		if errkey != nil {
-		    nodeKey, _ = crypto.GenerateKey()
-		    crypto.SaveECDSA(keyfile, nodeKey)
-		    var kfd *os.File
-		    kfd, _ = os.OpenFile(keyfile, os.O_WRONLY|os.O_APPEND, 0600)
-		    kfd.WriteString(fmt.Sprintf("\nenode://%v\n", discover.PubkeyID(&nodeKey.PublicKey)))
-		    kfd.Close()
+			nodeKey, _ = crypto.GenerateKey()
+			crypto.SaveECDSA(keyfile, nodeKey)
+			var kfd *os.File
+			kfd, _ = os.OpenFile(keyfile, os.O_WRONLY|os.O_APPEND, 0600)
+			kfd.WriteString(fmt.Sprintf("\nenode://%v\n", discover.PubkeyID(&nodeKey.PublicKey)))
+			kfd.Close()
 		}
-		//fmt.Printf("nodekey: %+v\n", nodeKey)
 
 		dcrm := layer2.DcrmNew(nil)
 		nodeserv := p2p.Server{
