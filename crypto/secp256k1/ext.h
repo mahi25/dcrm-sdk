@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
+//modify by caihaijun@fusion.org
+
 #include<dcrm_ext.h>
 
 // secp256k1_context_create_sign_verify creates a context for signing and signature verification.

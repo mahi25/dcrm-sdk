@@ -38,6 +38,9 @@ Available commands are:
 For all commands, -n prevents execution of external programs (dry run mode).
 
 */
+
+//modify by caihaijun@fusion.org
+
 package main
 
 import (
@@ -60,7 +63,6 @@ import (
 
 	"github.com/fusion/go-fusion/internal/build"
 	"github.com/fusion/go-fusion/internal/params"
-	//sv "github.com/fusion/go-fusion/swarm/version"
 )
 
 var (
@@ -137,7 +139,6 @@ var (
 
 	debSwarm = debPackage{
 		Name:        "ethereum-swarm",
-		//Version:     sv.Version,
 		Executables: debSwarmExecutables,
 	}
 
@@ -180,11 +181,6 @@ func main() {
 	switch os.Args[1] {
 	case "install":
 		doInstall(os.Args[2:])
-	case "gen-dcrm-so":
-		doBuild(os.Args[2:])
-	case "linkbuild":
-		//doLinkBuild(os.Args[2:])
-		doLinkBuild2(os.Args[2:])
 	case "test":
 		doTest(os.Args[2:])
 	case "lint":
@@ -244,15 +240,6 @@ func doInstall(cmdline []string) {
 		goinstall.Args = append(goinstall.Args, "-v")
 		goinstall.Args = append(goinstall.Args, packages...)
 		build.MustRun(goinstall)
-
-		/////
-		/*goinstall = goTool("tool", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"compile","-I","./build/_workspace/pkg/linux_amd64/","./cmd/gdcrm/gdcrm.go"}...)
-		build.MustRun(goinstall)
-		goinstall = goTool("tool", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"link","-o","gdcrm","-L","./build/_workspace/pkg/linux_amd64/","./cmd/gdcrm/gdcrm.go"}...)
-		build.MustRun(goinstall)*/
-		/////
 		return
 	}
 	// If we are cross compiling to ARMv5 ARMv6 or ARMv7, clean any previous builds
@@ -262,239 +249,11 @@ func doInstall(cmdline []string) {
 			os.RemoveAll(filepath.Join(path, "pkg", runtime.GOOS+"_arm"))
 		}
 	}
-
 	// Seems we are cross compiling, work around forbidden GOBIN
 	goinstall := goToolArch(*arch, *cc, "install", buildFlags(env)...)
 	goinstall.Args = append(goinstall.Args, "-v")
 	goinstall.Args = append(goinstall.Args, []string{"-buildmode", "archive"}...)
 	goinstall.Args = append(goinstall.Args, packages...)
-	build.MustRun(goinstall)
-
-	if cmds, err := ioutil.ReadDir("cmd"); err == nil {
-		for _, cmd := range cmds {
-			pkgs, err := parser.ParseDir(token.NewFileSet(), filepath.Join(".", "cmd", cmd.Name()), nil, parser.PackageClauseOnly)
-			if err != nil {
-				log.Fatal(err)
-			}
-			for name := range pkgs {
-				if name == "main" {
-					gobuild := goToolArch(*arch, *cc, "build", buildFlags(env)...)
-					gobuild.Args = append(gobuild.Args, "-v")
-					gobuild.Args = append(gobuild.Args, []string{"-o", executablePath(cmd.Name())}...)
-					gobuild.Args = append(gobuild.Args, "."+string(filepath.Separator)+filepath.Join("cmd", cmd.Name()))
-					build.MustRun(gobuild)
-					break
-				}
-			}
-		}
-	}
-}
-
-func doBuild(cmdline []string) {
-    var (
-		arch = flag.String("arch", "", "Architecture to cross build for")
-		cc   = flag.String("cc", "", "C compiler to cross build with")
-	)
-	flag.CommandLine.Parse(cmdline)
-	env := build.Env()
-
-	// Check Go version. People regularly open issues about compilation
-	// failure with outdated Go. This should save them the trouble.
-	if !strings.Contains(runtime.Version(), "devel") {
-		// Figure out the minor version number since we can't textually compare (1.10 < 1.9)
-		var minor int
-		fmt.Sscanf(strings.TrimPrefix(runtime.Version(), "go1."), "%d", &minor)
-
-		if minor < 9 {
-			log.Println("You have Go version", runtime.Version())
-			log.Println("go-fusion requires at least Go version 1.9 and cannot")
-			log.Println("be compiled with an earlier version. Please upgrade your Go installation.")
-			os.Exit(1)
-		}
-	}
-	// Compile packages given as arguments, or everything if there are no arguments.
-	packages := []string{"./..."}
-	if flag.NArg() > 0 {
-		packages = flag.Args()
-	}
-	packages = build.ExpandPackagesNoVendor(packages)
-
-	if *arch == "" || *arch == runtime.GOARCH {
-		goinstall := goTool("install", buildFlags(env)...)
-		//goinstall.Args = append(goinstall.Args, []string{"-buildmode", "shared","-linkshared","std"}...)
-		//build.MustRun(goinstall)
-		//goinstall = goTool("install", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"./crypto/dcrm/dev/"}...)
-		build.MustRun(goinstall)
-		return
-	}
-	// If we are cross compiling to ARMv5 ARMv6 or ARMv7, clean any previous builds
-	if *arch == "arm" {
-		os.RemoveAll(filepath.Join(runtime.GOROOT(), "pkg", runtime.GOOS+"_arm"))
-		for _, path := range filepath.SplitList(build.GOPATH()) {
-			os.RemoveAll(filepath.Join(path, "pkg", runtime.GOOS+"_arm"))
-		}
-	}
-
-	// Seems we are cross compiling, work around forbidden GOBIN
-	goinstall := goToolArch(*arch, *cc, "install", buildFlags(env)...)
-	//goinstall.Args = append(goinstall.Args, []string{"-buildmode", "shared","-linkshared","std"}...)
-	//goinstall.Args = append(goinstall.Args, packages...)
-	//build.MustRun(goinstall)
-	//goinstall = goToolArch(*arch, *cc,"install", buildFlags(env)...)
-	//goinstall.Args = append(goinstall.Args, []string{"-buildmode", "shared","-linkshared","./crypto/dcrm"}...)
-	goinstall.Args = append(goinstall.Args, []string{"./crypto/dcrm/dev/"}...)
-	//goinstall.Args = append(goinstall.Args, packages...)
-	build.MustRun(goinstall)
-
-	if cmds, err := ioutil.ReadDir("cmd"); err == nil {
-		for _, cmd := range cmds {
-			pkgs, err := parser.ParseDir(token.NewFileSet(), filepath.Join(".", "cmd", cmd.Name()), nil, parser.PackageClauseOnly)
-			if err != nil {
-				log.Fatal(err)
-			}
-			for name := range pkgs {
-				if name == "main" {
-					gobuild := goToolArch(*arch, *cc, "build", buildFlags(env)...)
-					gobuild.Args = append(gobuild.Args, "-v")
-					gobuild.Args = append(gobuild.Args, []string{"-o", executablePath(cmd.Name())}...)
-					gobuild.Args = append(gobuild.Args, "."+string(filepath.Separator)+filepath.Join("cmd", cmd.Name()))
-					build.MustRun(gobuild)
-					break
-				}
-			}
-		}
-	}
-}
-
-func doLinkBuild(cmdline []string) {
-    var (
-		arch = flag.String("arch", "", "Architecture to cross build for")
-		cc   = flag.String("cc", "", "C compiler to cross build with")
-	)
-	flag.CommandLine.Parse(cmdline)
-	env := build.Env()
-
-	// Check Go version. People regularly open issues about compilation
-	// failure with outdated Go. This should save them the trouble.
-	if !strings.Contains(runtime.Version(), "devel") {
-		// Figure out the minor version number since we can't textually compare (1.10 < 1.9)
-		var minor int
-		fmt.Sscanf(strings.TrimPrefix(runtime.Version(), "go1."), "%d", &minor)
-
-		if minor < 9 {
-			log.Println("You have Go version", runtime.Version())
-			log.Println("go-fusion requires at least Go version 1.9 and cannot")
-			log.Println("be compiled with an earlier version. Please upgrade your Go installation.")
-			os.Exit(1)
-		}
-	}
-	// Compile packages given as arguments, or everything if there are no arguments.
-	packages := []string{"./..."}
-	if flag.NArg() > 0 {
-		packages = flag.Args()
-	}
-	packages = build.ExpandPackagesNoVendor(packages)
-
-	if *arch == "" || *arch == runtime.GOARCH {
-		goinstall := goTool("build", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"-linkshared",cmdline[0]}...)
-		//goinstall.Args = append(goinstall.Args, "-v")
-		//goinstall.Args = append(goinstall.Args, packages...)
-		build.MustRun(goinstall)
-		return
-	}
-	// If we are cross compiling to ARMv5 ARMv6 or ARMv7, clean any previous builds
-	if *arch == "arm" {
-		os.RemoveAll(filepath.Join(runtime.GOROOT(), "pkg", runtime.GOOS+"_arm"))
-		for _, path := range filepath.SplitList(build.GOPATH()) {
-			os.RemoveAll(filepath.Join(path, "pkg", runtime.GOOS+"_arm"))
-		}
-	}
-
-	// Seems we are cross compiling, work around forbidden GOBIN
-	goinstall := goToolArch(*arch, *cc, "install", buildFlags(env)...)
-	goinstall.Args = append(goinstall.Args, []string{"-linkshared"}...)
-	goinstall.Args = append(goinstall.Args, "-v")
-	goinstall.Args = append(goinstall.Args, packages...)
-	build.MustRun(goinstall)
-
-	if cmds, err := ioutil.ReadDir("cmd"); err == nil {
-		for _, cmd := range cmds {
-			pkgs, err := parser.ParseDir(token.NewFileSet(), filepath.Join(".", "cmd", cmd.Name()), nil, parser.PackageClauseOnly)
-			if err != nil {
-				log.Fatal(err)
-			}
-			for name := range pkgs {
-				if name == "main" {
-					gobuild := goToolArch(*arch, *cc, "build", buildFlags(env)...)
-					gobuild.Args = append(gobuild.Args, "-v")
-					gobuild.Args = append(gobuild.Args, []string{"-o", executablePath(cmd.Name())}...)
-					gobuild.Args = append(gobuild.Args, "."+string(filepath.Separator)+filepath.Join("cmd", cmd.Name()))
-					build.MustRun(gobuild)
-					break
-				}
-			}
-		}
-	}
-}
-
-func doLinkBuild2(cmdline []string) {
-    var (
-		arch = flag.String("arch", "", "Architecture to cross build for")
-		cc   = flag.String("cc", "", "C compiler to cross build with")
-	)
-	flag.CommandLine.Parse(cmdline)
-	env := build.Env()
-
-	// Check Go version. People regularly open issues about compilation
-	// failure with outdated Go. This should save them the trouble.
-	if !strings.Contains(runtime.Version(), "devel") {
-		// Figure out the minor version number since we can't textually compare (1.10 < 1.9)
-		var minor int
-		fmt.Sscanf(strings.TrimPrefix(runtime.Version(), "go1."), "%d", &minor)
-
-		if minor < 9 {
-			log.Println("You have Go version", runtime.Version())
-			log.Println("go-fusion requires at least Go version 1.9 and cannot")
-			log.Println("be compiled with an earlier version. Please upgrade your Go installation.")
-			os.Exit(1)
-		}
-	}
-	// Compile packages given as arguments, or everything if there are no arguments.
-	packages := []string{"./..."}
-	if flag.NArg() > 0 {
-		packages = flag.Args()
-	}
-	packages = build.ExpandPackagesNoVendor(packages)
-
-	if *arch == "" || *arch == runtime.GOARCH {
-		goinstall := goTool("tool", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"compile","-I","./crypto/dcrm/",cmdline[0]}...)
-		//goinstall.Args = append(goinstall.Args, "-v")
-		//goinstall.Args = append(goinstall.Args, packages...)
-		build.MustRun(goinstall)
-		goinstall = goTool("tool", buildFlags(env)...)
-		goinstall.Args = append(goinstall.Args, []string{"link","-o","gdcrm","-L","./crypto/dcrm/",cmdline[0]}...)
-		//goinstall.Args = append(goinstall.Args, "-v")
-		//goinstall.Args = append(goinstall.Args, packages...)
-		build.MustRun(goinstall)
-		return
-	}
-	// If we are cross compiling to ARMv5 ARMv6 or ARMv7, clean any previous builds
-	if *arch == "arm" {
-		os.RemoveAll(filepath.Join(runtime.GOROOT(), "pkg", runtime.GOOS+"_arm"))
-		for _, path := range filepath.SplitList(build.GOPATH()) {
-			os.RemoveAll(filepath.Join(path, "pkg", runtime.GOOS+"_arm"))
-		}
-	}
-
-	// Seems we are cross compiling, work around forbidden GOBIN
-	goinstall := goToolArch(*arch, *cc, "tool", buildFlags(env)...)
-	goinstall.Args = append(goinstall.Args, []string{"compile","-I","./crypto/dcrm/",cmdline[0]}...)
-	build.MustRun(goinstall)
-	goinstall = goToolArch(*arch, *cc, "tool", buildFlags(env)...)
-	goinstall.Args = append(goinstall.Args, []string{"link","-o","gdcrm","-L","./crypto/dcrm/",cmdline[0]}...)
 	build.MustRun(goinstall)
 
 	if cmds, err := ioutil.ReadDir("cmd"); err == nil {
@@ -651,7 +410,7 @@ func doArchive(cmdline []string) {
 		geth     = "geth-" + basegeth + ext
 		alltools = "geth-alltools-" + basegeth + ext
 
-		baseswarm = archiveBasename(*arch, ""/*sv.ArchiveVersion(env.Commit)*/)
+		baseswarm = archiveBasename(*arch, "1.0")
 		swarm     = "swarm-" + baseswarm + ext
 	)
 	maybeSkipArchive(env)
@@ -684,6 +443,7 @@ func archiveBasename(arch string, archiveVersion string) string {
 	}
 	return platform + "-" + archiveVersion
 }
+
 func archiveUpload(archive string, blobstore string, signer string) error {
 	// If signing was requested, generate the signature files
 	if signer != "" {
