@@ -7,7 +7,6 @@
 gdcrm:
 	build/env.sh go run build/ci.go install ./cmd/gdcrm
 	@echo "Done building."
-	@echo "Run \"$(GOBIN)/gdcrm\" to launch gdcrm."
 
 bootnode:
 	build/env.sh go run build/ci.go install ./cmd/bootnode
