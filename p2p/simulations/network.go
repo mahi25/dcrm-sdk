@@ -24,8 +24,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fsn-dev/dcrm-sdk/event"
-	"github.com/fsn-dev/dcrm-sdk/log"
+	"github.com/fsn-dev/dcrm-sdk/p2p/event"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"
@@ -116,7 +115,7 @@ func (net *Network) NewNodeWithConfig(conf *adapters.NodeConfig) (*Node, error) 
 		Node:   adapterNode,
 		Config: conf,
 	}
-	log.Trace(fmt.Sprintf("node %v created", conf.ID))
+	fmt.Sprintf("node %v created", conf.ID)
 	net.nodeMap[conf.ID] = len(net.Nodes)
 	net.Nodes = append(net.Nodes, node)
 
@@ -174,13 +173,13 @@ func (net *Network) startWithSnapshots(id discover.NodeID, snapshots map[string]
 	if node.Up {
 		return fmt.Errorf("node %v already up", id)
 	}
-	log.Trace(fmt.Sprintf("starting node %v: %v using %v", id, node.Up, net.nodeAdapter.Name()))
+	fmt.Sprintf("starting node %v: %v using %v", id, node.Up, net.nodeAdapter.Name())
 	if err := node.Start(snapshots); err != nil {
-		log.Warn(fmt.Sprintf("start up failed: %v", err))
+		fmt.Sprintf("start up failed: %v", err)
 		return err
 	}
 	node.Up = true
-	log.Info(fmt.Sprintf("started node %v: %v", id, node.Up))
+	fmt.Sprintf("started node %v: %v", id, node.Up)
 
 	net.events.Send(NewEvent(node))
 
@@ -209,7 +208,6 @@ func (net *Network) watchPeerEvents(id discover.NodeID, events chan *p2p.PeerEve
 		defer net.lock.Unlock()
 		node := net.getNode(id)
 		if node == nil {
-			log.Error("Can not find node for id", "id", id)
 			return
 		}
 		node.Up = false
@@ -240,7 +238,7 @@ func (net *Network) watchPeerEvents(id discover.NodeID, events chan *p2p.PeerEve
 
 		case err := <-sub.Err():
 			if err != nil {
-				log.Error(fmt.Sprintf("error getting peer events for node %v", id), "err", err)
+				fmt.Sprintf("error getting peer events for node %v", id), "err", err
 			}
 			return
 		}
@@ -262,7 +260,7 @@ func (net *Network) Stop(id discover.NodeID) error {
 		return err
 	}
 	node.Up = false
-	log.Info(fmt.Sprintf("stop node %v: %v", id, node.Up))
+	fmt.Sprintf("stop node %v: %v", id, node.Up)
 
 	net.events.Send(ControlEvent(node))
 	return nil
@@ -271,7 +269,7 @@ func (net *Network) Stop(id discover.NodeID) error {
 // Connect connects two nodes together by calling the "admin_addPeer" RPC
 // method on the "one" node so that it connects to the "other" node
 func (net *Network) Connect(oneID, otherID discover.NodeID) error {
-	log.Debug(fmt.Sprintf("connecting %s to %s", oneID, otherID))
+	fmt.Sprintf("connecting %s to %s", oneID, otherID)
 	conn, err := net.InitConn(oneID, otherID)
 	if err != nil {
 		return err
@@ -481,10 +479,9 @@ func (net *Network) InitConn(oneID, otherID discover.NodeID) (*Conn, error) {
 
 	err = conn.nodesUp()
 	if err != nil {
-		log.Trace(fmt.Sprintf("nodes not up: %v", err))
+		fmt.Sprintf("nodes not up: %v", err)
 		return nil, fmt.Errorf("nodes not up: %v", err)
 	}
-	log.Debug("InitConn - connection initiated")
 	conn.initiated = time.Now()
 	return conn, nil
 }
@@ -492,9 +489,9 @@ func (net *Network) InitConn(oneID, otherID discover.NodeID) (*Conn, error) {
 // Shutdown stops all nodes in the network and closes the quit channel
 func (net *Network) Shutdown() {
 	for _, node := range net.Nodes {
-		log.Debug(fmt.Sprintf("stopping node %s", node.ID().TerminalString()))
+		fmt.Sprintf("stopping node %s", node.ID().TerminalString())
 		if err := node.Stop(); err != nil {
-			log.Warn(fmt.Sprintf("error stopping node %s", node.ID().TerminalString()), "err", err)
+			fmt.Sprintf("error stopping node %s", node.ID().TerminalString())
 		}
 	}
 	close(net.quitc)
@@ -708,18 +705,14 @@ func (net *Network) Subscribe(events chan *Event) {
 }
 
 func (net *Network) executeControlEvent(event *Event) {
-	log.Trace("execute control event", "type", event.Type, "event", event)
 	switch event.Type {
 	case EventTypeNode:
 		if err := net.executeNodeEvent(event); err != nil {
-			log.Error("error executing node event", "event", event, "err", err)
 		}
 	case EventTypeConn:
 		if err := net.executeConnEvent(event); err != nil {
-			log.Error("error executing conn event", "event", event, "err", err)
 		}
 	case EventTypeMsg:
-		log.Warn("ignoring control msg event")
 	}
 }
 

@@ -38,12 +38,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fsn-dev/dcrm-sdk/log"
-	"github.com/fsn-dev/dcrm-sdk/metrics"
+	"github.com/fsn-dev/dcrm-sdk/p2p/metrics"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
-	"github.com/fsn-dev/dcrm-sdk/rlp"
-	"github.com/fsn-dev/dcrm-sdk/swarm/spancontext"
-	"github.com/fsn-dev/dcrm-sdk/swarm/tracing"
+	"github.com/fsn-dev/dcrm-sdk/p2p/rlp"
+	//"github.com/fsn-dev/dcrm-sdk/swarm/spancontext"
+	//"github.com/fsn-dev/dcrm-sdk/swarm/tracing"
 	opentracing "github.com/opentracing/opentracing-go"
 )
 
@@ -219,7 +218,7 @@ func (p *Peer) Run(handler func(ctx context.Context, msg interface{}) error) err
 		if err := p.handleIncoming(handler); err != nil {
 			if err != io.EOF {
 				metrics.GetOrRegisterCounter("peer.handleincoming.error", nil).Inc(1)
-				log.Error("peer.handleIncoming", "err", err)
+				fmt.Errorf("peer.handleIncoming", "err", err)
 			}
 
 			return err
@@ -243,7 +242,7 @@ func (p *Peer) Send(ctx context.Context, msg interface{}) error {
 	metrics.GetOrRegisterCounter("peer.send", nil).Inc(1)
 
 	var b bytes.Buffer
-	if tracing.Enabled {
+/*	if tracing.Enabled {
 		writer := bufio.NewWriter(&b)
 
 		tracer := opentracing.GlobalTracer()
@@ -262,7 +261,7 @@ func (p *Peer) Send(ctx context.Context, msg interface{}) error {
 
 		writer.Flush()
 	}
-
+*/
 	r, err := rlp.EncodeToBytes(msg)
 	if err != nil {
 		return err
@@ -305,7 +304,7 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 	var wmsg WrappedMsg
 	err = msg.Decode(&wmsg)
 	if err != nil {
-		log.Error(err.Error())
+		fmt.Errorf(err.Error())
 		return err
 	}
 
@@ -313,7 +312,7 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 
 	// if tracing is enabled and the context coming within the request is
 	// not empty, try to unmarshal it
-	if tracing.Enabled && len(wmsg.Context) > 0 {
+/*	if tracing.Enabled && len(wmsg.Context) > 0 {
 		var sctx opentracing.SpanContext
 
 		tracer := opentracing.GlobalTracer()
@@ -321,13 +320,13 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 			opentracing.Binary,
 			bytes.NewReader(wmsg.Context))
 		if err != nil {
-			log.Error(err.Error())
+			fmt.Errorf(err.Error())
 			return err
 		}
 
 		ctx = spancontext.WithContext(ctx, sctx)
 	}
-
+*/
 	val, ok := p.spec.NewMsg(msg.Code)
 	if !ok {
 		return errorf(ErrInvalidMsgCode, "%v", msg.Code)
@@ -357,7 +356,6 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 // * the listening peer waits for the remote handshake and then sends it
 // returns the remote handshake and an error
 func (p *Peer) Handshake(ctx context.Context, hs interface{}, verify func(interface{}) error) (rhs interface{}, err error) {
-	//log.Debug("===========Peer.Handshake=============")//caihaijun
 	if _, ok := p.spec.GetCode(hs); !ok {
 		return nil, errorf(ErrHandshake, "unknown handshake message type: %T", hs)
 	}

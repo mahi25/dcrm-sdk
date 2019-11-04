@@ -32,13 +32,12 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/fsn-dev/dcrm-sdk/log"
 	"github.com/fsn-dev/dcrm-sdk/node"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/p2p/simulations"
 	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"
-	"github.com/fsn-dev/dcrm-sdk/rlp"
+	"github.com/fsn-dev/dcrm-sdk/p2p/rlp"
 	"github.com/fsn-dev/dcrm-sdk/rpc"
 )
 
@@ -110,14 +109,14 @@ func (t *ProtocolTester) Stop() error {
 // p2p/simulations network connection with the in memory network adapter
 func (t *ProtocolTester) Connect(selfID discover.NodeID, peers ...*adapters.NodeConfig) {
 	for _, peer := range peers {
-		log.Trace(fmt.Sprintf("start node %v", peer.ID))
+		fmt.Sprintf("start node %v", peer.ID)
 		if _, err := t.network.NewNodeWithConfig(peer); err != nil {
 			panic(fmt.Sprintf("error starting peer %v: %v", peer.ID, err))
 		}
 		if err := t.network.Start(peer.ID); err != nil {
 			panic(fmt.Sprintf("error starting peer %v: %v", peer.ID, err))
 		}
-		log.Trace(fmt.Sprintf("connect to %v", peer.ID))
+		fmt.Sprintf("connect to %v", peer.ID)
 		if err := t.network.Connect(selfID, peer.ID); err != nil {
 			panic(fmt.Sprintf("error connecting to peer %v: %v", peer.ID, err))
 		}

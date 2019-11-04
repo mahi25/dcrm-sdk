@@ -22,7 +22,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fsn-dev/dcrm-sdk/log"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"
@@ -91,9 +90,9 @@ func (s *ProtocolSession) trigger(trig Trigger) error {
 	errc := make(chan error)
 
 	go func() {
-		log.Trace(fmt.Sprintf("trigger %v (%v)....", trig.Msg, trig.Code))
+		fmt.Sprintf("trigger %v (%v)....", trig.Msg, trig.Code)
 		errc <- mockNode.Trigger(&trig)
-		log.Trace(fmt.Sprintf("triggered %v (%v)", trig.Msg, trig.Code))
+		fmt.Sprintf("triggered %v (%v)", trig.Msg, trig.Code)
 	}()
 
 	t := trig.Timeout
@@ -209,7 +208,7 @@ func (s *ProtocolSession) TestExchanges(exchanges ...Exchange) error {
 		if err := s.testExchange(e); err != nil {
 			return fmt.Errorf("exchange #%d %q: %v", i, e.Label, err)
 		}
-		log.Trace(fmt.Sprintf("exchange #%d %q: run successfully", i, e.Label))
+		fmt.Sprintf("exchange #%d %q: run successfully", i, e.Label)
 	}
 	return nil
 }

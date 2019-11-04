@@ -1,5 +1,7 @@
 module github.com/fsn-dev/dcrm-sdk
 
+go 1.13
+
 require (
 	github.com/aristanetworks/goarista v0.0.0-20191023202215-f096da5361bb
 	github.com/btcsuite/btcd v0.20.0-beta
@@ -10,8 +12,6 @@ require (
 	github.com/huin/goupnp v1.0.0
 	github.com/jackpal/go-nat-pmp v1.0.1
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/rs/cors v1.7.0
 	github.com/syndtr/goleveldb v1.0.0

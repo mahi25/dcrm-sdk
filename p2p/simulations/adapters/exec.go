@@ -35,8 +35,6 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/fsn-dev/dcrm-sdk/log"
-	"github.com/fsn-dev/dcrm-sdk/node"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/rpc"
@@ -158,7 +156,6 @@ func (n *ExecNode) Start(snapshots map[string][]byte) (err error) {
 	}
 	defer func() {
 		if err != nil {
-			log.Error("node failed to start", "err", err)
 			n.Stop()
 		}
 	}()
@@ -337,14 +334,12 @@ type execNodeConfig struct {
 func ExternalIP() net.IP {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
-		log.Crit("error getting IP address", "err", err)
 	}
 	for _, addr := range addrs {
 		if ip, ok := addr.(*net.IPNet); ok && !ip.IP.IsLoopback() && !ip.IP.IsLinkLocalUnicast() {
 			return ip.IP
 		}
 	}
-	log.Warn("unable to determine explicit IP address, falling back to loopback")
 	return net.IP{127, 0, 0, 1}
 }
 
@@ -352,9 +347,6 @@ func ExternalIP() net.IP {
 // argv[0] being "p2p-node", reading the service / ID from argv[1] / argv[2]
 // and the node config from the _P2P_NODE_CONFIG environment variable
 func execP2PNode() {
-	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.LogfmtFormat()))
-	glogger.Verbosity(log.LvlInfo)
-	log.Root().SetHandler(glogger)
 
 	// read the services from argv
 	serviceNames := strings.Split(os.Args[1], ",")
@@ -362,14 +354,11 @@ func execP2PNode() {
 	// decode the config
 	confEnv := os.Getenv("_P2P_NODE_CONFIG")
 	if confEnv == "" {
-		log.Crit("missing _P2P_NODE_CONFIG")
 	}
 	var conf execNodeConfig
 	if err := json.Unmarshal([]byte(confEnv), &conf); err != nil {
-		log.Crit("error decoding _P2P_NODE_CONFIG", "err", err)
 	}
 	conf.Stack.P2P.PrivateKey = conf.Node.PrivateKey
-	conf.Stack.Logger = log.New("node.id", conf.Node.ID.String())
 
 	if strings.HasPrefix(conf.Stack.P2P.ListenAddr, ":") {
 		conf.Stack.P2P.ListenAddr = ExternalIP().String() + conf.Stack.P2P.ListenAddr
@@ -381,7 +370,6 @@ func execP2PNode() {
 	// initialize the devp2p stack
 	stack, err := node.New(&conf.Stack)
 	if err != nil {
-		log.Crit("error creating node stack", "err", err)
 	}
 
 	// register the services, collecting them into a map so we can wrap
@@ -390,7 +378,6 @@ func execP2PNode() {
 	for _, name := range serviceNames {
 		serviceFunc, exists := serviceFuncs[name]
 		if !exists {
-			log.Crit("unknown node service", "name", name)
 		}
 		constructor := func(nodeCtx *node.ServiceContext) (node.Service, error) {
 			ctx := &ServiceContext{
@@ -409,7 +396,6 @@ func execP2PNode() {
 			return service, nil
 		}
 		if err := stack.Register(constructor); err != nil {
-			log.Crit("error starting service", "name", name, "err", err)
 		}
 	}
 
@@ -417,12 +403,10 @@ func execP2PNode() {
 	if err := stack.Register(func(ctx *node.ServiceContext) (node.Service, error) {
 		return &snapshotService{services}, nil
 	}); err != nil {
-		log.Crit("error starting snapshot service", "err", err)
 	}
 
 	// start the stack
 	if err := stack.Start(); err != nil {
-		log.Crit("error stating node stack", "err", err)
 	}
 
 	// stop the stack if we get a SIGTERM signal
@@ -431,7 +415,6 @@ func execP2PNode() {
 		signal.Notify(sigc, syscall.SIGTERM)
 		defer signal.Stop(sigc)
 		<-sigc
-		log.Info("Received SIGTERM, shutting down...")
 		stack.Stop()
 	}()
 

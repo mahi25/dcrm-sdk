@@ -27,7 +27,6 @@ import (
 
 	"github.com/docker/docker/pkg/reexec"
 	"github.com/fsn-dev/dcrm-sdk/crypto"
-	"github.com/fsn-dev/dcrm-sdk/node"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/rpc"
@@ -209,7 +208,7 @@ func assignTCPPort() (uint16, error) {
 type ServiceContext struct {
 	RPCDialer
 
-	NodeContext *node.ServiceContext
+	//NodeContext *node.ServiceContext
 	Config      *NodeConfig
 	Snapshot    []byte
 }

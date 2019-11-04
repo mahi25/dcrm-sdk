@@ -29,7 +29,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/fsn-dev/dcrm-sdk/event"
+	"github.com/fsn-dev/dcrm-sdk/p2p/event"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"

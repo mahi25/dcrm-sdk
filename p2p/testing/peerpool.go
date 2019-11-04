@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/fsn-dev/dcrm-sdk/log"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 )
 
@@ -42,7 +41,7 @@ func NewTestPeerPool() *TestPeerPool {
 func (p *TestPeerPool) Add(peer TestPeer) {
 	p.lock.Lock()
 	defer p.lock.Unlock()
-	log.Trace(fmt.Sprintf("pp add peer  %v", peer.ID()))
+	fmt.Sprintf("pp add peer  %v", peer.ID())
 	p.peers[peer.ID()] = peer
 
 }

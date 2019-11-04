@@ -23,8 +23,7 @@ import (
 	"net"
 	"sync"
 
-	"github.com/fsn-dev/dcrm-sdk/event"
-	"github.com/fsn-dev/dcrm-sdk/log"
+	"github.com/fsn-dev/dcrm-sdk/p2p/event"
 	"github.com/fsn-dev/dcrm-sdk/node"
 	"github.com/fsn-dev/dcrm-sdk/p2p"
 	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
@@ -96,7 +95,6 @@ func (s *SimAdapter) NewNode(config *NodeConfig) (Node, error) {
 			EnableMsgEvents: config.EnableMsgEvents,
 		},
 		NoUSB:  true,
-		Logger: log.New("node.id", id.String()),
 	})
 	if err != nil {
 		return nil, err
