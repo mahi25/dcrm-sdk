@@ -1,11 +1,19 @@
+## Clone The Repository
+mkdir -p $GOPATH/src/github.com/fsn-dev
+
+cd $GOPATH/src/github.com/fsn-dev
+
+git clone https://github.com/fsn-dev/dcrm-sdk.git
+
+cd dcrm-sdk
 
 ## Build
 
-make
+./build.sh
 
 ## Run
 
-./build/bin/gdcrm
+./bin/cmd/gdcrm
 
 ## JSON RPC API
 
@@ -69,9 +77,9 @@ curl -X POST -H "Content-Type":application/json --data '{"jsonrpc":"2.0","method
 ## Run Local
 
 #### Run bootnode
-./build/bin/bootnode --genkey ./bootnode.key
+./bin/cmd/bootnode --genkey ./bootnode.key
 
-./build/bin/bootnode --nodekey ./bootnode.key --addr :5550 --group 0
+./bin/cmd/bootnode --nodekey ./bootnode.key --addr :5550 --group 0
 
 will print bootnode which use for run node with args --bootnodes
 bootnode key such as enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@[::]:5550
@@ -81,11 +89,11 @@ INFO: if want reboot node, please wait 1 minute to run node after close node
 
 without args:
 
-./build/bin/gdcrm
+./bin/cmd/gdcrm
 
 (default: --nodekey ~/node.key --rpcport 5559 --port 5551 --bootnodes "enode://200cb94957955bfa331ce14b72325c39f3eaa6bcfa962308c967390e5722f6fda0f6080781fde6a025a6280fbf23f38ca454e51a6b75ddbc1f9d57593790545a@47.107.50.83:5550")
 
 with args,for example:
 
-./build/bin/gdcrm --rpcport 9012 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@192.168.1.104:12340" --port 12341 --nodekey "node1.key"
+./bin/cmd/gdcrm --rpcport 9012 --bootnodes "enode://16ab118525ec559dde2640b513676b8df7368aac3a80cc5c9d9e8b9c71781c09103fe3e8b5dd17bf245f0c71b891ec4848b142852763ab2146a1e288df15da40@192.168.1.104:12340" --port 12341 --nodekey "node1.key"
 
