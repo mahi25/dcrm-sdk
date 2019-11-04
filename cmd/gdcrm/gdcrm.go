@@ -79,10 +79,7 @@ func init() {
 func startP2pNode(c *cli.Context) error {
 	go func() error {
 		if keyfile == "" {
-			user, erru := user.Current()
-			if erru == nil {
-				keyfile = fmt.Sprintf("%v/node.key", user.HomeDir)
-			}
+			keyfile = fmt.Sprintf("node.key")
 		}
 		fmt.Printf("nodekey: %v\n", keyfile)
 		nodeKey, errkey := crypto.LoadECDSA(keyfile)
