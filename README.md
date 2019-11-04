@@ -9,7 +9,7 @@ cd dcrm-sdk
 
 ## Build
 
-./build.sh
+make
 
 ## Run
 
