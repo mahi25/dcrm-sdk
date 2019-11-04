@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/user"
 	"time"
 
 	"github.com/fsn-dev/dcrm-sdk/crypto"
