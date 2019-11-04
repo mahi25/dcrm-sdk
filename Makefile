@@ -5,9 +5,7 @@
 .PHONY: gdcrm bootnode clean
 
 gdcrm:
-	./gomod.sh
-	go build -v -mod=vendor -o bin/cmd/bootnode ./cmd/bootnode/*.go
-	go build -v -mod=vendor -o bin/cmd/gdcrm ./cmd/gdcrm/*.go
+	./build.sh
 	@echo "Done building."
 
 clean:
