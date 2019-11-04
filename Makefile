@@ -14,4 +14,9 @@ clean:
 	rm -fr bin/cmd/* 
 	rm -rf go.mod
 	rm -rf go.sum
+
+distClean:
+	rm -fr bin/cmd/* 
+	rm -rf go.mod
+	rm -rf go.sum
 	rm -rf vendor
