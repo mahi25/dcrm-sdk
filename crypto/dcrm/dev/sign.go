@@ -17,10 +17,10 @@
 package dev
 
 import (
-    "github.com/fusion/go-fusion/crypto/dcrm/dev/lib"
+    "github.com/fsn-dev/dcrm-sdk/crypto/dcrm/dev/lib"
     "math/big"
-    "github.com/fusion/go-fusion/crypto/secp256k1"
-    "github.com/fusion/go-fusion/crypto/sha3"
+    "github.com/fsn-dev/dcrm-sdk/crypto/secp256k1"
+    "github.com/fsn-dev/dcrm-sdk/crypto/sha3"
     "time"
     "sort"
     "math/rand"

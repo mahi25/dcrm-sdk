@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fusion/go-fusion/internal/common/mclock"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/mclock"
 )
 
 // Subscription represents a stream of events. The carrier of the events is typically a

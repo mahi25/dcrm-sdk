@@ -23,7 +23,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/fusion/go-fusion/internal/common/mclock"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/mclock"
 )
 
 const (

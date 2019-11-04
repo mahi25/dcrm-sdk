@@ -31,9 +31,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fusion/go-fusion/internal/common"
-	"github.com/fusion/go-fusion/crypto"
-	"github.com/fusion/go-fusion/crypto/secp256k1"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
+	"github.com/fsn-dev/dcrm-sdk/crypto/secp256k1"
 )
 
 const NodeIDBits = 512

@@ -17,9 +17,9 @@
 package lib 
 
 import (
-	"github.com/fusion/go-fusion/internal/common/math/random"
-	s256 "github.com/fusion/go-fusion/crypto/secp256k1"
-	"github.com/fusion/go-fusion/crypto/sha3"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/math/random"
+	s256 "github.com/fsn-dev/dcrm-sdk/crypto/secp256k1"
+	"github.com/fsn-dev/dcrm-sdk/crypto/sha3"
 	"math/big"
 )
 

@@ -29,7 +29,7 @@ import (
 	"net"
 	"sort"
 
-	"github.com/fusion/go-fusion/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
 )
 
 const (

@@ -25,9 +25,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fusion/go-fusion/p2p/event"
-	"github.com/fusion/go-fusion/p2p/discover"
-	"github.com/fusion/go-fusion/p2p/rlp"
+	"github.com/fsn-dev/dcrm-sdk/p2p/event"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/p2p/rlp"
 )
 
 // Msg defines the structure of a p2p message.

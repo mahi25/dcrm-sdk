@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fusion/go-fusion/common"
+	"github.com/fsn-dev/dcrm-sdk/common"
 )
 
 // In this test, nodes try to randomly resolve each other.

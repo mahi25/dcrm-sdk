@@ -29,11 +29,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/fusion/go-fusion/event"
-	"github.com/fusion/go-fusion/p2p"
-	"github.com/fusion/go-fusion/p2p/discover"
-	"github.com/fusion/go-fusion/p2p/simulations/adapters"
-	"github.com/fusion/go-fusion/rpc"
+	"github.com/fsn-dev/dcrm-sdk/event"
+	"github.com/fsn-dev/dcrm-sdk/p2p"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"
+	"github.com/fsn-dev/dcrm-sdk/rpc"
 	"github.com/julienschmidt/httprouter"
 	"golang.org/x/net/websocket"
 )

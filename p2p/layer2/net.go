@@ -22,8 +22,8 @@ import (
 	"sync/atomic"
 
 	mapset "github.com/deckarep/golang-set"
-	"github.com/fusion/go-fusion/p2p"
-	"github.com/fusion/go-fusion/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/p2p"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 )
 
 //TODO

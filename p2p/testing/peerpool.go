@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/fusion/go-fusion/log"
-	"github.com/fusion/go-fusion/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/log"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
 )
 
 type TestPeer interface {

@@ -34,7 +34,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/fusion/go-fusion/rlp"
+	"github.com/fsn-dev/dcrm-sdk/rlp"
 )
 
 const SizeLimit = 300 // maximum encoded size of a node record in bytes

@@ -26,11 +26,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/fusion/go-fusion/p2p/event"
-	"github.com/fusion/go-fusion/p2p/discover"
-	"github.com/fusion/go-fusion/p2p/discv5"
-	"github.com/fusion/go-fusion/p2p/nat"
-	"github.com/fusion/go-fusion/p2p/netutil"
+	"github.com/fsn-dev/dcrm-sdk/p2p/event"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discv5"
+	"github.com/fsn-dev/dcrm-sdk/p2p/nat"
+	"github.com/fsn-dev/dcrm-sdk/p2p/netutil"
 )
 
 const (

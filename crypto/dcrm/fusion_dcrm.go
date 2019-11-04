@@ -19,10 +19,10 @@ package dcrm
 import (
 	"fmt"
 	"strings"
-	p2pdcrm "github.com/fusion/go-fusion/p2p/layer2"
+	p2pdcrm "github.com/fsn-dev/dcrm-sdk/p2p/layer2"
 	"strconv"
 	"time"
-	"github.com/fusion/go-fusion/crypto/dcrm/dev"
+	"github.com/fsn-dev/dcrm-sdk/crypto/dcrm/dev"
 )
 
 var (

@@ -28,8 +28,8 @@ import (
 	"testing/quick"
 	"time"
 
-	"github.com/fusion/go-fusion/common"
-	"github.com/fusion/go-fusion/crypto"
+	"github.com/fsn-dev/dcrm-sdk/common"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
 )
 
 func ExampleNewNode() {

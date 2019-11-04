@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/fusion/go-fusion/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
 )
 
 // Genesis hashes to enforce below configs on.
@@ -31,7 +31,7 @@ var (
 )
 
 var (
-	// FsnChainConfig contains the chain parameters to run a node on the fusion network.
+	// FsnChainConfig contains the chain parameters to run a node on the fsn-dev network.
 	FsnChainConfig = &ChainConfig{
 		ChainID:             big.NewInt(30400),
 		HomesteadBlock:      big.NewInt(1),

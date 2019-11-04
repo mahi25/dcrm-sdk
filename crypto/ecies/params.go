@@ -42,7 +42,7 @@ import (
 	"fmt"
 	"hash"
 
-	ethcrypto "github.com/fusion/go-fusion/crypto"
+	ethcrypto "github.com/fsn-dev/dcrm-sdk/crypto"
 )
 
 var (

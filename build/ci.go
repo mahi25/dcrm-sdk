@@ -61,8 +61,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fusion/go-fusion/internal/build"
-	"github.com/fusion/go-fusion/internal/params"
+	"github.com/fsn-dev/dcrm-sdk/internal/build"
+	"github.com/fsn-dev/dcrm-sdk/internal/params"
 )
 
 var (

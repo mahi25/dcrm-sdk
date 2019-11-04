@@ -23,10 +23,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fusion/go-fusion/p2p"
-	"github.com/fusion/go-fusion/p2p/discover"
-	"github.com/fusion/go-fusion/p2p/simulations/adapters"
-	p2ptest "github.com/fusion/go-fusion/p2p/testing"
+	"github.com/fsn-dev/dcrm-sdk/p2p"
+	"github.com/fsn-dev/dcrm-sdk/p2p/discover"
+	"github.com/fsn-dev/dcrm-sdk/p2p/simulations/adapters"
+	p2ptest "github.com/fsn-dev/dcrm-sdk/p2p/testing"
 )
 
 // handshake message type

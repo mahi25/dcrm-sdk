@@ -25,9 +25,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/fusion/go-fusion/internal/common"
-	"github.com/fusion/go-fusion/internal/common/mclock"
-	"github.com/fusion/go-fusion/crypto"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/mclock"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
 )
 
 const (

@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fusion/go-fusion/common"
-	"github.com/fusion/go-fusion/crypto"
+	"github.com/fsn-dev/dcrm-sdk/common"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
 )
 
 func TestNetwork_Lookup(t *testing.T) {

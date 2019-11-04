@@ -28,10 +28,10 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/fusion/go-fusion/internal/common"
-	"github.com/fusion/go-fusion/internal/common/math"
-	"github.com/fusion/go-fusion/crypto/sha3"
-	"github.com/fusion/go-fusion/p2p/rlp"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/math"
+	"github.com/fsn-dev/dcrm-sdk/crypto/sha3"
+	"github.com/fsn-dev/dcrm-sdk/p2p/rlp"
 )
 
 var (

@@ -10,11 +10,11 @@ fi
 # Create fake Go workspace if it doesn't exist yet.
 workspace="$PWD/build/_workspace"
 root="$PWD"
-ethdir="$workspace/src/github.com/fusion"
-if [ ! -L "$ethdir/go-fusion" ]; then
+ethdir="$workspace/src/github.com/fsn-dev"
+if [ ! -L "$ethdir/dcrm-sdk" ]; then
     mkdir -p "$ethdir"
     cd "$ethdir"
-    ln -s ../../../../../. go-fusion
+    ln -s ../../../../../. dcrm-sdk
     cd "$root"
 fi
 
@@ -23,8 +23,8 @@ GOPATH="$workspace"
 export GOPATH
 
 # Run the command inside the workspace.
-cd "$ethdir/go-fusion"
-PWD="$ethdir/go-fusion"
+cd "$ethdir/dcrm-sdk"
+PWD="$ethdir/dcrm-sdk"
 
 # Launch the arguments with the configured environment.
 exec "$@"

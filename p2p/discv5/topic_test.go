@@ -21,8 +21,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fusion/go-fusion/common"
-	"github.com/fusion/go-fusion/common/mclock"
+	"github.com/fsn-dev/dcrm-sdk/common"
+	"github.com/fsn-dev/dcrm-sdk/common/mclock"
 )
 
 func TestTopicRadius(t *testing.T) {

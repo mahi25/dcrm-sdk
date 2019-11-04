@@ -19,7 +19,6 @@ package layer2
 import (
 	"fmt"
 	"time"
-	//"github.com/ethereum/go-ethereum/p2p/layer2"
 )
 
 //call define

@@ -22,8 +22,8 @@ import (
 	"io"
 	"net"
 
-	"github.com/fusion/go-fusion/crypto"
-	"github.com/fusion/go-fusion/rlp"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
+	"github.com/fsn-dev/dcrm-sdk/rlp"
 )
 
 // Entry is implemented by known node record entry types.

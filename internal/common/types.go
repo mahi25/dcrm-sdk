@@ -26,8 +26,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/fusion/go-fusion/internal/common/hexutil"
-	"github.com/fusion/go-fusion/crypto/sha3"
+	"github.com/fsn-dev/dcrm-sdk/internal/common/hexutil"
+	"github.com/fsn-dev/dcrm-sdk/crypto/sha3"
 )
 
 // Lengths of hashes and addresses in bytes.

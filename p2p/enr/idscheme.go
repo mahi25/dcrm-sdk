@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/fusion/go-fusion/common/math"
-	"github.com/fusion/go-fusion/crypto"
-	"github.com/fusion/go-fusion/crypto/sha3"
-	"github.com/fusion/go-fusion/rlp"
+	"github.com/fsn-dev/dcrm-sdk/common/math"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
+	"github.com/fsn-dev/dcrm-sdk/crypto/sha3"
+	"github.com/fsn-dev/dcrm-sdk/rlp"
 )
 
 // Registry of known identity schemes.

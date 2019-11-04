@@ -26,9 +26,9 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/fusion/go-fusion/common"
-	"github.com/fusion/go-fusion/crypto"
-	"github.com/fusion/go-fusion/rlp"
+	"github.com/fsn-dev/dcrm-sdk/common"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
+	"github.com/fsn-dev/dcrm-sdk/rlp"
 )
 
 func init() {

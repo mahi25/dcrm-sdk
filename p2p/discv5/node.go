@@ -30,8 +30,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fusion/go-fusion/internal/common"
-	"github.com/fusion/go-fusion/crypto"
+	"github.com/fsn-dev/dcrm-sdk/internal/common"
+	"github.com/fsn-dev/dcrm-sdk/crypto"
 )
 
 // Node represents a host on the network.

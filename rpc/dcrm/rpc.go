@@ -23,8 +23,8 @@ import (
 	"os/signal"
 	"net"
 	"strings"
-	"github.com/fusion/go-fusion/rpc"
-	"github.com/fusion/go-fusion/crypto/dcrm"
+	"github.com/fsn-dev/dcrm-sdk/rpc"
+	"github.com/fsn-dev/dcrm-sdk/crypto/dcrm"
 )
 
 func listenSignal(exit chan int) {
