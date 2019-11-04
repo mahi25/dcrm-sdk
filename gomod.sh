@@ -8,7 +8,7 @@ if [ ! -f "gomod.sh" ]; then
 	fi
 
 	export GO111MODULE=on
-	export GOPROXY=https://goproxy.io
+	#export GOPROXY=https://goproxy.io
 
 	echo "RUN go mod init"
 	go mod init github.com/fsn-dev/dcrm-sdk 2>/dev/null || true
