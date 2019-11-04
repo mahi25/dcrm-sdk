@@ -51,7 +51,8 @@ func main() {
 
 	natm, err := nat.Parse(*natdesc)
 	if err != nil {
-		//utils.Fatalf("-nat: %v", err)
+		fmt.Errorf("-nat: %v", err)
+		return
 	}
 	switch {
 	case *genKey != "":
@@ -64,12 +65,15 @@ func main() {
 		}
 		return
 	case *nodeKeyFile == "" && *nodeKeyHex == "":
-		//utils.Fatalf("Use -nodekey or -nodekeyhex to specify a private key")
+		fmt.Printf("Use -nodekey or -nodekeyhex to specify a private key\n")
+		return
 	case *nodeKeyFile != "" && *nodeKeyHex != "":
-		//utils.Fatalf("Options -nodekey and -nodekeyhex are mutually exclusive")
+		fmt.Printf("Options -nodekey and -nodekeyhex are mutually exclusive\n")
+		return
 	case *nodeKeyFile != "":
 		if nodeKey, err = crypto.LoadECDSA(*nodeKeyFile); err != nil {
-			//utils.Fatalf("-nodekey: %v", err)
+			fmt.Printf("-nodekey: %v\n", err)
+			return
 		}
 	case *nodeKeyHex != "":
 		if nodeKey, err = crypto.HexToECDSA(*nodeKeyHex); err != nil {
