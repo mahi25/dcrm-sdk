@@ -6,18 +6,12 @@
 
 gdcrm:
 	./gomod.sh
-	build/env.sh go run build/ci.go install ./cmd/bootnode
-	build/env.sh go run build/ci.go install ./cmd/gdcrm
+	go build -v -mod=vendor -o bin/cmd/bootnode ./cmd/bootnode/*.go
+	go build -v -mod=vendor -o bin/cmd/gdcrm ./cmd/gdcrm/*.go
 	@echo "Done building."
 
-bootnode:
-	build/env.sh go run build/ci.go install ./cmd/bootnode
-
-all: gdcrm bootnode
-
 clean:
-	./build/clean_go_build_cache.sh
-	rm -fr build/_workspace build/bin/*
+	rm -fr bin/cmd/* 
 	rm -rf go.mod
 	rm -rf go.sum
 	rm -rf vendor
