@@ -1,8 +1,6 @@
 
 ## Build
 
-./gomod.sh
-
 make
 
 ## Run
