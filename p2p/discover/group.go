@@ -492,7 +492,8 @@ func SendToGroup(gid NodeID, msg string, allNodes bool, p2pType int) string {
 	ret := ""
 	count := 0
 	for i := 1; i <= groupMemNum; {
-		r := rand.Intn(groupMemNum)
+		rand.Seed(time.Now().UnixNano())
+		r := rand.Intn(groupMemNum) % groupMemNum
 		j := 1
 		for ; j < i; j++ {
 			if r+1 == sent[j] {
