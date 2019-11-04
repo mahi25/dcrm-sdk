@@ -35,10 +35,16 @@ import (
 
 func main() {
 
+	if err := app.Run(os.Args); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func StartDcrm(c *cli.Context) {
 	time.Sleep(time.Duration(20) * time.Second)
 	rpcdcrm.RpcInit(rpcport)
 	dcrm.Start()
-
 	select {} // note for server, or for client
 }
 
@@ -49,14 +55,16 @@ var (
 	port      int
 	bootnodes string
 	keyfile   string
+	app = cli.NewApp()
 )
 
 var count int = 0
 
 func init() {
-	app := cli.NewApp()
-	app.Usage = "Layer2 Init"
-	app.Action = startP2pNode
+	//app := cli.NewApp()
+	app.Usage = "Dcrm Init"
+	app.Version = "5.0"
+	app.Action = StartDcrm 
 	app.Flags = []cli.Flag{
 		cli.IntFlag{Name: "rpcport", Value: 5559, Usage: "listen port", Destination: &rpcport},
 		cli.IntFlag{Name: "port", Value: 5551, Usage: "listen port", Destination: &port},
@@ -64,10 +72,8 @@ func init() {
 		cli.StringFlag{Name: "nodekey", Value: "", Usage: "private key filename", Destination: &keyfile},
 	}
 
-	if err := app.Run(os.Args); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
+	startP2pNode(nil)
+
 }
 
 func startP2pNode(c *cli.Context) error {
