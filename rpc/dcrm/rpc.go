@@ -46,7 +46,6 @@ func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母
     keytype := "ECDSA"  //tmp
     if (!strings.EqualFold(keytype,"ECDSA") && !strings.EqualFold(keytype,"ED25519")) || keytype == "" {
 	return map[string]interface{}{
-		"pubkey": "",
 		"error": "keytype not supported.",
 	}
     }
@@ -55,14 +54,12 @@ func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母
     if pubkey == "" && err != nil {
 	fmt.Println("===========dcrm_genPubkey,err=%v============",err)
 	return map[string]interface{}{
-		"pubkey": "",
 		"error": err.Error(),
 	}
     }
     
     return map[string]interface{}{
 	    "pubkey": pubkey,
-	    "error": "",
     }
 }
 
@@ -72,14 +69,12 @@ func (this *Service) Sign(pubkey string,message string) map[string]interface{} {
     keytype := "ECDSA"  //tmp
     if pubkey == "" || message == "" {
 	return map[string]interface{}{
-		"rsv": "",
 		"error": "pubkey is empty.",
 	}
     }
 
     if (!strings.EqualFold(keytype,"ECDSA") && !strings.EqualFold(keytype,"ED25519")) || keytype == "" {
 	return map[string]interface{}{
-		"rsv": "",
 		"error": "keytype not supported.",
 	}
     }
@@ -88,14 +83,12 @@ func (this *Service) Sign(pubkey string,message string) map[string]interface{} {
     rsv,err := dcrm.SendReqToGroup(msg,"rpc_sign")
     if rsv == "" && err != nil {
 	return map[string]interface{}{
-		"rsv": "",
 		"error": err.Error(),
 	}
     }
     
     return map[string]interface{}{
 	    "rsv": rsv,
-	    "error": "",
     }
 }
 
