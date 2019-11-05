@@ -43,9 +43,9 @@ var (
     SepDel = "dcrmsepdel"
 
     PaillierKeyLength = 2048
-    sendtogroup_lilo_timeout = 80 
-    sendtogroup_timeout = 80
-    ch_t = 60
+    sendtogroup_lilo_timeout = 40 
+    sendtogroup_timeout = 40
+    ch_t = 5
 
     //callback
     GetGroup func(string) (int,string)

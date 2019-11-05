@@ -32,7 +32,7 @@ var (
 )
 
 func Start() {
-    fmt.Println("\n===================Dcrm Already Start!====================\n")
+    fmt.Println("\n===================Dcrm Start!====================\n")
 }
 
 func SendReqToGroup(msg string,rpctype string) (string,error) {
