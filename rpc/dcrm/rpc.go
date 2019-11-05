@@ -50,8 +50,17 @@ func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母
 	}
     }
 
-    pubkey,err := dcrm.SendReqToGroup(keytype,"rpc_req_dcrmaddr")
-    if pubkey == "" && err != nil {
+    var err error
+    for i:= 0;i<3;i++ {
+	pubkey,err := dcrm.SendReqToGroup(keytype,"rpc_req_dcrmaddr")
+	if err == nil && pubkey != "" {
+	    return map[string]interface{}{
+		    "pubkey": pubkey,
+	    }
+	}
+    }
+    
+    if err != nil {
 	fmt.Println("===========dcrm_genPubkey,err=%v============",err)
 	return map[string]interface{}{
 		"error": err.Error(),
@@ -59,8 +68,9 @@ func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母
     }
     
     return map[string]interface{}{
-	    "pubkey": pubkey,
+	    "error":"gen pubkey fail.",
     }
+    
 }
 
 // this will be called by dcrm_sign
@@ -79,17 +89,27 @@ func (this *Service) Sign(pubkey string,message string) map[string]interface{} {
 	}
     }
 
-    msg := pubkey + ":" + keytype + ":" + message
-    rsv,err := dcrm.SendReqToGroup(msg,"rpc_sign")
-    if rsv == "" && err != nil {
+    var err error
+    for i:=0;i<3;i++ {
+	msg := pubkey + ":" + keytype + ":" + message
+	rsv,err := dcrm.SendReqToGroup(msg,"rpc_sign")
+	if err == nil && rsv != "" {
+	    return map[string]interface{}{
+		    "rsv": rsv,
+	    }
+	}
+    }
+
+    if err != nil {
 	return map[string]interface{}{
 		"error": err.Error(),
 	}
     }
     
     return map[string]interface{}{
-	    "rsv": rsv,
+	    "error": "dcrm sign fail.",
     }
+    
 }
 
 var (
