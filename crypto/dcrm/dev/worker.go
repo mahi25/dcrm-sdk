@@ -43,9 +43,9 @@ var (
     SepDel = "dcrmsepdel"
 
     PaillierKeyLength = 2048
-    sendtogroup_lilo_timeout = 40 
-    sendtogroup_timeout = 40
-    ch_t = 5
+    sendtogroup_lilo_timeout = 80 
+    sendtogroup_timeout = 80
+    ch_t = 10
 
     //callback
     GetGroup func(string) (int,string)
@@ -755,6 +755,7 @@ func Dcrmcallret(msg interface{},enode string) {
 
     ss := strings.Split(res,Sep)
     if len(ss) != 4 {
+	fmt.Println("=========Dcrmcallret,ss len != 4 .==============")
 	return
     }
 
@@ -763,6 +764,7 @@ func Dcrmcallret(msg interface{},enode string) {
     ret := ss[3]
     workid,err := strconv.Atoi(ss[1])
     if err != nil || workid < 0 {
+	fmt.Println("=========Dcrmcallret,workid < 0.==============")
 	return
     }
 
@@ -775,6 +777,7 @@ func Dcrmcallret(msg interface{},enode string) {
 	if ss[2] == "rpc_sign" {
 	    if w.retres.Len() == NodeCnt {
 		ret := GetGroupRes(workid)
+		fmt.Println("=========Dcrmcallret,status success,Get All Node Result.==============")
 		w.ch <- ret
 	    }
 	}
@@ -800,6 +803,7 @@ func Dcrmcallret(msg interface{},enode string) {
 	if ss[2] == "rpc_sign" {
 	    if w.retres.Len() == NodeCnt {
 		ret := GetGroupRes(workid)
+		fmt.Println("=========Dcrmcallret,status fail,Get All Node Result.==============")
 		w.ch <- ret
 	    }
 	}
@@ -1174,7 +1178,6 @@ func (self *SignSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
     GroupId := GetGroupIdByEnode(cur_enode)
     fmt.Println("=========SignSendMsgToDcrm.Run===========","GroupId",GroupId,"cur_enode",cur_enode)
     if strings.EqualFold(GroupId,"") {
-    //if !strings.EqualFold(GroupId,cur_enode) {
 	res := RpcDcrmRes{Ret:"",Err:fmt.Errorf("get group id fail.")}
 	ch <- res
 	return false
@@ -1186,14 +1189,16 @@ func (self *SignSendMsgToDcrm) Run(workid int,ch chan interface{}) bool {
 	return false
     }
 
-    fmt.Println("=========SignSendMsgToDcrm.Run,waiting for result.===========","GroupId",GroupId,"cur_enode",cur_enode)
+    fmt.Printf("=========SignSendMsgToDcrm.Run,waiting for result.===========GroupId = %s,cur_enode =%s========\n",GroupId,cur_enode)
     w := workers[workid]
     chret,cherr := GetChannelValue(sendtogroup_lilo_timeout,w.ch)
     if cherr != nil {
+	fmt.Printf("=========SignSendMsgToDcrm.Run,get result.===========err = %s,GroupId = %s,cur_enode =%s========\n",cherr.Error(),GroupId,cur_enode)
 	res2 := RpcDcrmRes{Ret:chret,Err:cherr}
 	ch <- res2
 	return false
     }
+    fmt.Printf("=========SignSendMsgToDcrm.Run,get result.===========result = %s,GroupId = %s,cur_enode = %s========\n",chret,GroupId,cur_enode)
     res2 := RpcDcrmRes{Ret:chret,Err:cherr}
     ch <- res2
 
@@ -1306,9 +1311,11 @@ func SendReqToGroup(msg string,rpctype string) (string,error) {
     RpcReqQueue <- req
     chret,cherr := GetChannelValue(t,req.ch)
     if cherr != nil {
+	fmt.Println("=========SendReqToGroup,get result,err = %s ============",cherr.Error())
 	return chret,cherr
     }
 
+    fmt.Println("=========SendReqToGroup,get result = %s ============",chret)
     return chret,nil
 }
 

@@ -18,6 +18,7 @@ package dcrm
 
 import (
 	"fmt"
+	"time"
 	"os"
 	"strconv"
 	"os/signal"
@@ -58,6 +59,8 @@ func (this *Service) GenPubkey() map[string]interface{} {   //函数名首字母
 		    "pubkey": pubkey,
 	    }
 	}
+	
+	time.Sleep(time.Duration(1000000)) //1000 000 000 == 1s
     }
     
     if err != nil {
@@ -94,13 +97,17 @@ func (this *Service) Sign(pubkey string,message string) map[string]interface{} {
 	msg := pubkey + ":" + keytype + ":" + message
 	rsv,err := dcrm.SendReqToGroup(msg,"rpc_sign")
 	if err == nil && rsv != "" {
+	    fmt.Println("========dcrm_sign,rsv = %s =============",rsv)
 	    return map[string]interface{}{
 		    "rsv": rsv,
 	    }
 	}
+	
+	time.Sleep(time.Duration(1000000)) //1000 000 000 == 1s
     }
 
     if err != nil {
+	fmt.Println("========dcrm_sign,err = %s =============",err.Error())
 	return map[string]interface{}{
 		"error": err.Error(),
 	}
